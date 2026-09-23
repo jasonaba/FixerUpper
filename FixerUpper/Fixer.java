@@ -1,5 +1,4 @@
 package FixerUpper;
-
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -8,12 +7,45 @@ public class Fixer {
 
 	// initialize this Fixer object and then convert it to postfix
 	public Fixer(String infix) {
-		Stack<Character> post_stack;
-		Stack<String> pre_stack;
 		postfix = new ArrayList<Character>();
 		prefix = new ArrayList<Character>();
-		post_stack = new Stack<Character>();
-		pre_stack = new Stack<String>();
+		convertToPost(infix);
+		
+		//Postfix to Prefix
+		prefix = new ArrayList<Character>(postfix);
+		Stack<String> pre_stack = new Stack<String>();
+		String right, left;
+		
+		for(int i = 0; i<prefix.size(); i++) {
+			char c = prefix.get(i);
+			if(isOperand(c)) {
+				pre_stack.push(""+c);
+			}
+			if(isOperator(c)) {
+				if(!pre_stack.isEmpty()) {//what if it ius only 1 on the stack? error
+					right = pre_stack.pop();
+					if(!pre_stack.isEmpty()) {
+					left = pre_stack.pop();
+					}else {
+						System.out.println("Error! There is an operator that is acting only on one operand!");
+					}
+					//add them together and add to stack
+				}
+			}
+		}
+		
+		
+		// evaluatePost(true);
+		// evaluatePre(true);
+	}
+
+	/**
+	 * Converts the infix expression to postfix & prefix
+	 * @param infix - the expression given
+	 */
+	private void convertToPost(String infix) {
+		Stack<Character> post_stack = new Stack<Character>();
+		
 		for (char c : infix.toCharArray()) {
 
 			if (isOperand(c)) {//add the numbers to the list
@@ -51,13 +83,8 @@ public class Fixer {
 		System.out.println(post_stack);
 		System.out.println("ArrayList");
 		System.out.println(postfix);
-
-		prefix = postfix;
 		
-		// evaluatePost(true);
-		// evaluatePre(true);
 	}
-
 	
 	/**
 	 * Evaluates the value using the postfix (evaluate first, and if there is an
