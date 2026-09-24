@@ -1,12 +1,31 @@
 package FixerUpper;
 
+import java.util.Scanner;
+
 public class Driver {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String expression1 = "(3*4+(5+6*7))/(8-9)";
-		String expression2 = "3+(4*2)-(6/3)"; 
-		System.out.println(expression2);
-		Fixer Bob = new Fixer(expression2);
+
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Print your expression here:");
+		String exp = scanner.nextLine();
+		Fixer user = new Fixer(exp);
+		if (user.isValid()) {
+			System.out.println("Would you like to see the evaluations (Y/N)?");
+
+			String response = scanner.nextLine();
+			if (response.equals("Y")) {
+				System.out.println("Answer: ");
+				user.evaluatePost(true);
+				System.out.println(user.evaluatePre(true));
+			} else {
+				System.out.println("Answer: ");
+				user.evaluatePost(false);
+				System.out.println(user.evaluatePre(false));
+			}
+		}
+
+		scanner.close();
 	}
 }
